@@ -40,7 +40,7 @@ def generate_html():
         valid_from = datetime.fromisoformat(catalog['valid_from']).date()
         return start_of_week <= valid_from <= end_of_week
 
-    stores = ['ALDI', 'LIDL']
+    stores = ['ALDI', 'LIDL', 'SPAR']
     all_catalogs = []
     
     # Load catalogs from all stores
@@ -67,6 +67,11 @@ def generate_html():
             'bg': 'bg-yellow-400',
             'letter': 'L',
             'text': 'text-blue-600'
+        },
+        'SPAR': {
+            'bg': 'bg-red-600',
+            'letter': 'S',
+            'text': 'text-white'
         }
     }
     
