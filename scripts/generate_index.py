@@ -27,18 +27,12 @@ def load_catalogs(store_name: str) -> List[Dict[str, Any]]:
 
 def generate_html():
     """Generate index.html with combined catalog data."""
-    def check_active(catalog: Dict[str, Any]) -> bool:
+    def is_this_week(catalog: Dict[str, Any]) -> bool:
         today = datetime.now().date()
         valid_from = datetime.fromisoformat(catalog['valid_from']).date()
         valid_to = datetime.fromisoformat(catalog['valid_to']).date()
+        # Check if today falls between valid_from and valid_to
         return valid_from <= today <= valid_to
-    
-    def is_this_week(catalog: Dict[str, Any]) -> bool:
-        today = datetime.now().date()
-        start_of_week = today - timedelta(days=today.weekday())
-        end_of_week = start_of_week + timedelta(days=6)
-        valid_from = datetime.fromisoformat(catalog['valid_from']).date()
-        return start_of_week <= valid_from <= end_of_week
 
     stores = ['ALDI', 'LIDL', 'SPAR']
     all_catalogs = []
@@ -48,7 +42,6 @@ def generate_html():
         catalogs = load_catalogs(store)
         for catalog in catalogs:
             catalog['store'] = store
-            catalog['is_active'] = check_active(catalog)
             catalog['is_this_week'] = is_this_week(catalog)
             catalog['date_range'] = format_date_range(catalog['valid_from'], catalog['valid_to'])
         all_catalogs.extend(catalogs)
@@ -60,21 +53,40 @@ def generate_html():
     store_styles = {
         'ALDI': {
             'bg': 'bg-blue-800',
-            'letter': 'A',
             'text': 'text-white'
         },
         'LIDL': {
             'bg': 'bg-yellow-400',
-            'letter': 'L',
             'text': 'text-blue-600'
         },
         'SPAR': {
             'bg': 'bg-red-600',
-            'letter': 'S',
             'text': 'text-white'
         }
     }
     
+    # Group catalogs by date range
+    date_groups = {}
+    for catalog in all_catalogs:
+        date_key = catalog['date_range']
+        if date_key not in date_groups:
+            date_groups[date_key] = {
+                'dates': {
+                    'valid_from': catalog['valid_from'],
+                    'valid_to': catalog['valid_to']
+                },
+                'catalogs': [],
+                'is_this_week': is_this_week(catalog)
+            }
+        date_groups[date_key]['catalogs'].append(catalog)
+
+    # Sort date groups by valid_from date
+    sorted_groups = dict(sorted(
+        date_groups.items(),
+        key=lambda x: datetime.fromisoformat(x[1]['dates']['valid_from']),
+        reverse=True
+    ))
+
     # Generate HTML
     html = """
 <!DOCTYPE html>
@@ -88,73 +100,56 @@ def generate_html():
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .clickable-row {
-            cursor: pointer;
+        .store-button {
             transition: all 0.2s;
         }
-        .clickable-row:hover {
+        .store-button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .this-week {
-            background-color: rgba(59, 130, 246, 0.05);
-            font-weight: 500;
-        }
-        .this-week:hover {
             background-color: rgba(59, 130, 246, 0.1);
-        }
-        .store-name {
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            transform: scale(1.02);
         }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
-    <div class="max-w-7xl mx-auto space-y-8">
-        <div class="bg-white rounded-lg shadow overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <tbody class="bg-white divide-y divide-gray-200">
+    <div class="max-w-3xl mx-auto space-y-6">
     """
-    
-    # Add catalog rows
-    for catalog in all_catalogs:
-        store_name = catalog.get('store', '')
-        is_active = catalog.get('is_active', False)
-        is_this_week = catalog.get('is_this_week', False)
-        url = catalog.get('url', '#')
-        store_style = store_styles.get(store_name, {'bg': 'bg-gray-500', 'letter': '?'})
-        
-        row_classes = []
-        row_classes.append("clickable-row")
-        if is_this_week:
-            row_classes.append("this-week")
-        if is_active:
-            row_classes.append("hover:bg-green-50")
-        else:
-            row_classes.append("hover:bg-gray-50")
-        
+
+    for date_range, group in sorted_groups.items():
+        group_classes = ["bg-white rounded-lg shadow-sm overflow-hidden"]
+        if group['is_this_week']:
+            group_classes.append("this-week")
+
         html += f"""
-                        <tr onclick="window.open('{url}', '_blank')" class="{' '.join(row_classes)}">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-8 w-8 rounded-sm {store_style['bg']} flex items-center justify-center">
-                                        <span class="{store_style['text']} font-bold">{store_style['letter']}</span>
-                                    </div>
-                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">{store_name}</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{catalog['date_range']}</div>
-                            </td>
-                        </tr>
+        <div class="{' '.join(group_classes)}">
+            <div class="px-4 py-3 border-b border-gray-200">
+                <div class="text-sm font-medium text-gray-900">{date_range}</div>
+            </div>
+            <div class="p-4 flex flex-wrap gap-3">
         """
-    
-    html += """
-                    </tbody>
-                </table>
+
+        # Add store buttons
+        for catalog in group['catalogs']:
+            store_name = catalog['store']
+            store_style = store_styles[store_name]
+            
+            html += f"""
+                <a href="{catalog['url']}" 
+                   target="_blank" 
+                   class="store-button flex items-center justify-center px-4 py-2 rounded-md {store_style['bg']} {store_style['text']} w-24 font-medium">
+                    <span class="text-sm">{store_name}</span>
+                </a>
+            """
+
+        html += """
             </div>
         </div>
-        
+        """
+
+    html += """
         <div class="text-center text-sm text-gray-500">
             Last updated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + """
         </div>
@@ -162,7 +157,7 @@ def generate_html():
 </body>
 </html>
     """
-    
+
     # Write the HTML file
     output_file = Path('index.html')
     with open(output_file, 'w', encoding='utf-8') as f:
