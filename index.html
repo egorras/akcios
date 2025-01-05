@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-100">
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,14 +21,20 @@
             background-color: rgba(59, 130, 246, 0.1);
             outline: 2px solid rgba(59, 130, 246, 0.2);
         }
+        @media (prefers-color-scheme: dark) {
+            .this-week {
+                background-color: rgba(59, 130, 246, 0.15);
+                outline: 2px solid rgba(59, 130, 246, 0.3);
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
     <div class="max-w-3xl mx-auto space-y-6">
     
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-            <div class="px-4 py-3 border-b border-gray-200">
-                <div class="text-sm font-medium text-gray-900">2025 01-09 → 01-15</div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Jan 09 — Jan 15</div>
             </div>
             <div class="p-4 flex flex-wrap gap-3">
         
@@ -53,9 +59,9 @@
             </div>
         </div>
         
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden this-week">
-            <div class="px-4 py-3 border-b border-gray-200">
-                <div class="text-sm font-medium text-gray-900">2025 01-02 → 01-08</div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden this-week">
+            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Jan 02 — Jan 08</div>
             </div>
             <div class="p-4 flex flex-wrap gap-3">
         
@@ -80,8 +86,8 @@
             </div>
         </div>
         
-        <div class="text-center text-sm text-gray-500">
-            Last updated: 2025-01-06 00:35:38
+        <div class="text-center text-sm text-gray-500 dark:text-gray-400">
+            Last updated: 2025-01-06 00:40:37
         </div>
     </div>
 </body>

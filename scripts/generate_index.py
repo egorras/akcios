@@ -11,9 +11,8 @@ def format_date_range(valid_from: str, valid_to: str) -> str:
     from_date = datetime.fromisoformat(valid_from)
     to_date = datetime.fromisoformat(valid_to)
     
-    if from_date.year == to_date.year:
-        return f"{from_date.year} {from_date.strftime('%m-%d')} → {to_date.strftime('%m-%d')}"
-    return f"{from_date.strftime('%Y %m-%d')} → {to_date.strftime('%Y %m-%d')}"
+    # Using %b for abbreviated month name and %d for day
+    return f"{from_date.strftime('%b %d')} — {to_date.strftime('%b %d')}"
 
 def load_catalogs(store_name: str) -> List[Dict[str, Any]]:
     """Load catalogs from store-specific index file."""
@@ -90,7 +89,7 @@ def generate_html():
     # Generate HTML
     html = """
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-100">
+<html lang="en" class="bg-gray-100 dark:bg-gray-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,6 +110,12 @@ def generate_html():
             background-color: rgba(59, 130, 246, 0.1);
             outline: 2px solid rgba(59, 130, 246, 0.2);
         }
+        @media (prefers-color-scheme: dark) {
+            .this-week {
+                background-color: rgba(59, 130, 246, 0.15);
+                outline: 2px solid rgba(59, 130, 246, 0.3);
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -118,14 +123,14 @@ def generate_html():
     """
 
     for date_range, group in sorted_groups.items():
-        group_classes = ["bg-white rounded-lg shadow-sm overflow-hidden"]
+        group_classes = ["bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden"]
         if group['is_this_week']:
             group_classes.append("this-week")
 
         html += f"""
         <div class="{' '.join(group_classes)}">
-            <div class="px-4 py-3 border-b border-gray-200">
-                <div class="text-sm font-medium text-gray-900">{date_range}</div>
+            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{date_range}</div>
             </div>
             <div class="p-4 flex flex-wrap gap-3">
         """
@@ -149,7 +154,7 @@ def generate_html():
         """
 
     html += """
-        <div class="text-center text-sm text-gray-500">
+        <div class="text-center text-sm text-gray-500 dark:text-gray-400">
             Last updated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + """
         </div>
     </div>
