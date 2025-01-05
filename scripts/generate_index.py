@@ -96,7 +96,7 @@ def generate_html():
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
-    <title>Akcios</title>
+    <title>Akciós</title>
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
