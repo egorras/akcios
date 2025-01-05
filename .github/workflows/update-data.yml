@@ -1,0 +1,31 @@
+name: Update Data
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Runs every 6 hours
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Ensure data directory exists
+      run: mkdir -p data
+    
+    - name: Update JSON data
+      run: |
+        echo "{\"lastUpdated\": \"$(date -u)\"}" > data/index.json
+    
+    - name: Commit and push if changed
+      run: |
+        git config --global user.name 'GitHub Action'
+        git config --global user.email 'action@github.com'
+        git add data/index.json
+        git commit -m "Update data" || exit 0
+        git push
+
+permissions:
+  contents: write 
