@@ -48,7 +48,6 @@ def generate_html():
         catalogs = load_catalogs(store)
         for catalog in catalogs:
             catalog['store'] = store
-            catalog['store_logo'] = f'images/{store}.png'
             catalog['is_active'] = check_active(catalog)
             catalog['is_this_week'] = is_this_week(catalog)
             catalog['date_range'] = format_date_range(catalog['valid_from'], catalog['valid_to'])
@@ -56,6 +55,20 @@ def generate_html():
     
     # Sort catalogs by valid_from date
     all_catalogs.sort(key=lambda x: x.get('valid_from', ''), reverse=True)
+    
+    # Add this after the stores definition
+    store_styles = {
+        'ALDI': {
+            'bg': 'bg-blue-800',
+            'letter': 'A',
+            'text': 'text-white'
+        },
+        'LIDL': {
+            'bg': 'bg-yellow-400',
+            'letter': 'L',
+            'text': 'text-blue-600'
+        }
+    }
     
     # Generate HTML
     html = """
@@ -97,11 +110,11 @@ def generate_html():
     
     # Add catalog rows
     for catalog in all_catalogs:
-        store_logo = catalog.get('store_logo', '')
         store_name = catalog.get('store', '')
         is_active = catalog.get('is_active', False)
         is_this_week = catalog.get('is_this_week', False)
         url = catalog.get('url', '#')
+        store_style = store_styles.get(store_name, {'bg': 'bg-gray-500', 'letter': '?'})
         
         row_classes = []
         row_classes.append("clickable-row")
@@ -116,12 +129,10 @@ def generate_html():
                         <tr onclick="window.open('{url}', '_blank')" class="{' '.join(row_classes)}">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-8 w-8">
-                                        <img class="h-8 w-8 object-contain" src="{store_logo}" alt="{store_name}">
+                                    <div class="flex-shrink-0 h-8 w-8 rounded-sm {store_style['bg']} flex items-center justify-center">
+                                        <span class="{store_style['text']} font-bold">{store_style['letter']}</span>
                                     </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">{store_name}</div>
-                                    </div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900">{store_name}</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
