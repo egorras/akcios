@@ -96,7 +96,7 @@ def generate_html():
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
     <title>Akciós</title>
-    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/images/favicon.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .store-button {
