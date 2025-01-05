@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from pathlib import Path
 from typing import List, Dict, Any
@@ -32,6 +32,13 @@ def generate_html():
         valid_from = datetime.fromisoformat(catalog['valid_from']).date()
         valid_to = datetime.fromisoformat(catalog['valid_to']).date()
         return valid_from <= today <= valid_to
+    
+    def is_this_week(catalog: Dict[str, Any]) -> bool:
+        today = datetime.now().date()
+        start_of_week = today - timedelta(days=today.weekday())
+        end_of_week = start_of_week + timedelta(days=6)
+        valid_from = datetime.fromisoformat(catalog['valid_from']).date()
+        return start_of_week <= valid_from <= end_of_week
 
     stores = ['ALDI', 'LIDL']
     all_catalogs = []
@@ -43,6 +50,7 @@ def generate_html():
             catalog['store'] = store
             catalog['store_logo'] = f'images/{store}.png'
             catalog['is_active'] = check_active(catalog)
+            catalog['is_this_week'] = is_this_week(catalog)
             catalog['date_range'] = format_date_range(catalog['valid_from'], catalog['valid_to'])
         all_catalogs.extend(catalogs)
     
@@ -60,19 +68,29 @@ def generate_html():
     <meta name="googlebot" content="noindex, nofollow">
     <title>Store Catalogs</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .clickable-row {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .clickable-row:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .this-week {
+            background-color: rgba(59, 130, 246, 0.05);
+            font-weight: 500;
+        }
+        .this-week:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+    </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
     <div class="max-w-7xl mx-auto space-y-8">
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Store</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valid Period</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Link</th>
-                        </tr>
-                    </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
     """
     
@@ -81,12 +99,20 @@ def generate_html():
         store_logo = catalog.get('store_logo', '')
         store_name = catalog.get('store', '')
         is_active = catalog.get('is_active', False)
+        is_this_week = catalog.get('is_this_week', False)
+        url = catalog.get('url', '#')
         
-        row_class = "hover:bg-green-50" if is_active else "hover:bg-gray-50"
-        button_class = "bg-green-600 hover:bg-green-700 focus:ring-green-500" if is_active else "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
+        row_classes = []
+        row_classes.append("clickable-row")
+        if is_this_week:
+            row_classes.append("this-week")
+        if is_active:
+            row_classes.append("hover:bg-green-50")
+        else:
+            row_classes.append("hover:bg-gray-50")
         
         html += f"""
-                        <tr class="{row_class}">
+                        <tr onclick="window.open('{url}', '_blank')" class="{' '.join(row_classes)}">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8">
@@ -99,13 +125,6 @@ def generate_html():
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{catalog['date_range']}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="{catalog.get('url', '#')}" 
-                                   target="_blank"
-                                   class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white {button_class} focus:outline-none focus:ring-2 focus:ring-offset-2">
-                                    View
-                                </a>
                             </td>
                         </tr>
         """
