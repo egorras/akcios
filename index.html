@@ -8,22 +8,32 @@
     <meta name="googlebot" content="noindex, nofollow">
     <title>Store Catalogs</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .clickable-row {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .clickable-row:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .this-week {
+            background-color: rgba(59, 130, 246, 0.05);
+            font-weight: 500;
+        }
+        .this-week:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+    </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
     <div class="max-w-7xl mx-auto space-y-8">
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Store</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valid Period</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Link</th>
-                        </tr>
-                    </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
     
-                        <tr class="hover:bg-gray-50">
+                        <tr onclick="window.open('https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_09_kw02kqihsij', '_blank')" class="clickable-row hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8">
@@ -37,16 +47,9 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">2025 01-09 → 01-15</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_09_kw02kqihsij" 
-                                   target="_blank"
-                                   class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2">
-                                    View
-                                </a>
-                            </td>
                         </tr>
         
-                        <tr class="hover:bg-gray-50">
+                        <tr onclick="window.open('https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-02-het-2025/ar/0?lf=HHZ', '_blank')" class="clickable-row hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8">
@@ -60,16 +63,9 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">2025 01-09 → 01-15</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-02-het-2025/ar/0?lf=HHZ" 
-                                   target="_blank"
-                                   class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2">
-                                    View
-                                </a>
-                            </td>
                         </tr>
         
-                        <tr class="hover:bg-green-50">
+                        <tr onclick="window.open('https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_02_kw01cfml6hrh', '_blank')" class="clickable-row this-week hover:bg-green-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8">
@@ -83,16 +79,9 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">2025 01-02 → 01-08</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_02_kw01cfml6hrh" 
-                                   target="_blank"
-                                   class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2">
-                                    View
-                                </a>
-                            </td>
                         </tr>
         
-                        <tr class="hover:bg-green-50">
+                        <tr onclick="window.open('https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-01-het-2025/ar/0?lf=HHZ', '_blank')" class="clickable-row this-week hover:bg-green-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8">
@@ -105,13 +94,6 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">2025 01-02 → 01-08</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-01-het-2025/ar/0?lf=HHZ" 
-                                   target="_blank"
-                                   class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2">
-                                    View
-                                </a>
                             </td>
                         </tr>
         
@@ -121,7 +103,7 @@
         </div>
         
         <div class="text-center text-sm text-gray-500">
-            Last updated: 2025-01-05 21:26:54
+            Last updated: 2025-01-05 21:35:22
         </div>
     </div>
 </body>
