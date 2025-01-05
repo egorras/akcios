@@ -103,6 +103,9 @@ def generate_html():
         .this-week:hover {
             background-color: rgba(59, 130, 246, 0.1);
         }
+        .store-name {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -137,7 +140,7 @@ def generate_html():
                                     <div class="flex-shrink-0 h-8 w-8 rounded-sm {store_style['bg']} flex items-center justify-center">
                                         <span class="{store_style['text']} font-bold">{store_style['letter']}</span>
                                     </div>
-                                    <div class="ml-4 text-sm font-medium text-gray-900">{store_name}</div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">{store_name}</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

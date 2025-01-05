@@ -25,6 +25,9 @@
         .this-week:hover {
             background-color: rgba(59, 130, 246, 0.1);
         }
+        .store-name {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -34,13 +37,13 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <tbody class="bg-white divide-y divide-gray-200">
     
-                        <tr onclick="window.open('https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_09_kw02kqihsij', '_blank')" class="clickable-row hover:bg-gray-50">
+                        <tr onclick="window.open('https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_09_kw02kqihsij', '_blank')" class="clickable-row this-week hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8 rounded-sm bg-blue-800 flex items-center justify-center">
                                         <span class="text-white font-bold">A</span>
                                     </div>
-                                    <div class="ml-4 text-sm font-medium text-gray-900">ALDI</div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">ALDI</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -48,13 +51,13 @@
                             </td>
                         </tr>
         
-                        <tr onclick="window.open('https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-02-het-2025/ar/0?lf=HHZ', '_blank')" class="clickable-row hover:bg-gray-50">
+                        <tr onclick="window.open('https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-02-het-2025/ar/0?lf=HHZ', '_blank')" class="clickable-row this-week hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8 rounded-sm bg-yellow-400 flex items-center justify-center">
                                         <span class="text-blue-600 font-bold">L</span>
                                     </div>
-                                    <div class="ml-4 text-sm font-medium text-gray-900">LIDL</div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">LIDL</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -62,13 +65,27 @@
                             </td>
                         </tr>
         
-                        <tr onclick="window.open('https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_02_kw01cfml6hrh', '_blank')" class="clickable-row this-week hover:bg-green-50">
+                        <tr onclick="window.open('https://www.spar.hu/ajanlatok/spar/250109-1-spar-szorolap-p', '_blank')" class="clickable-row this-week hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-8 w-8 rounded-sm bg-red-600 flex items-center justify-center">
+                                        <span class="text-white font-bold">S</span>
+                                    </div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">SPAR</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2025 01-09 → 01-15</div>
+                            </td>
+                        </tr>
+        
+                        <tr onclick="window.open('https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_02_kw01cfml6hrh', '_blank')" class="clickable-row hover:bg-green-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8 rounded-sm bg-blue-800 flex items-center justify-center">
                                         <span class="text-white font-bold">A</span>
                                     </div>
-                                    <div class="ml-4 text-sm font-medium text-gray-900">ALDI</div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">ALDI</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -76,13 +93,27 @@
                             </td>
                         </tr>
         
-                        <tr onclick="window.open('https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-01-het-2025/ar/0?lf=HHZ', '_blank')" class="clickable-row this-week hover:bg-green-50">
+                        <tr onclick="window.open('https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-01-het-2025/ar/0?lf=HHZ', '_blank')" class="clickable-row hover:bg-green-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-8 w-8 rounded-sm bg-yellow-400 flex items-center justify-center">
                                         <span class="text-blue-600 font-bold">L</span>
                                     </div>
-                                    <div class="ml-4 text-sm font-medium text-gray-900">LIDL</div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">LIDL</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2025 01-02 → 01-08</div>
+                            </td>
+                        </tr>
+        
+                        <tr onclick="window.open('https://www.spar.hu/ajanlatok/spar/250102-1-spar-szorolap-m', '_blank')" class="clickable-row hover:bg-green-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-8 w-8 rounded-sm bg-red-600 flex items-center justify-center">
+                                        <span class="text-white font-bold">S</span>
+                                    </div>
+                                    <div class="ml-4 text-sm font-medium text-gray-900 store-name">SPAR</div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -96,7 +127,7 @@
         </div>
         
         <div class="text-center text-sm text-gray-500">
-            Last updated: 2025-01-05 22:53:28
+            Last updated: 2025-01-06 00:11:15
         </div>
     </div>
 </body>
