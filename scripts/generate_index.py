@@ -109,8 +109,7 @@ def generate_html():
         }
         .this-week {
             background-color: rgba(59, 130, 246, 0.1);
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            transform: scale(1.02);
+            outline: 2px solid rgba(59, 130, 246, 0.2);
         }
     </style>
 </head>
