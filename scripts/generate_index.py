@@ -6,6 +6,15 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def format_date_range(valid_from: str, valid_to: str) -> str:
+    """Format date range in a more readable way."""
+    from_date = datetime.fromisoformat(valid_from)
+    to_date = datetime.fromisoformat(valid_to)
+    
+    if from_date.year == to_date.year:
+        return f"{from_date.year} {from_date.strftime('%m-%d')} → {to_date.strftime('%m-%d')}"
+    return f"{from_date.strftime('%Y %m-%d')} → {to_date.strftime('%Y %m-%d')}"
+
 def load_catalogs(store_name: str) -> List[Dict[str, Any]]:
     """Load catalogs from store-specific index file."""
     index_file = Path(f'data/index-{store_name.lower()}.json')
@@ -18,6 +27,12 @@ def load_catalogs(store_name: str) -> List[Dict[str, Any]]:
 
 def generate_html():
     """Generate index.html with combined catalog data."""
+    def check_active(catalog: Dict[str, Any]) -> bool:
+        today = datetime.now().date()
+        valid_from = datetime.fromisoformat(catalog['valid_from']).date()
+        valid_to = datetime.fromisoformat(catalog['valid_to']).date()
+        return valid_from <= today <= valid_to
+
     stores = ['ALDI', 'LIDL']
     all_catalogs = []
     
@@ -27,111 +42,89 @@ def generate_html():
         for catalog in catalogs:
             catalog['store'] = store
             catalog['store_logo'] = f'images/{store}.png'
+            catalog['is_active'] = check_active(catalog)
+            catalog['date_range'] = format_date_range(catalog['valid_from'], catalog['valid_to'])
         all_catalogs.extend(catalogs)
     
-    # Sort all catalogs by valid_from date
+    # Sort catalogs by valid_from date
     all_catalogs.sort(key=lambda x: x.get('valid_from', ''), reverse=True)
     
     # Generate HTML
     html = """
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en" class="bg-gray-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
-    <title>Akciós</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f5f5f5;
-        }
-        tr:hover {
-            background-color: #f9f9f9;
-        }
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .store-logo {
-            height: 30px;
-            width: auto;
-            vertical-align: middle;
-            margin-right: 10px;
-        }
-        td {
-            vertical-align: middle;
-        }
-        .store-cell {
-            white-space: nowrap;
-        }
-    </style>
+    <title>Store Catalogs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>Store</th>
-                <th>Title</th>
-                <th>Valid From</th>
-                <th>Valid To</th>
-                <th>Link</th>
-            </tr>
-        </thead>
-        <tbody>
+<body class="min-h-screen p-4 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-8">
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Store</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valid Period</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Link</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
     """
     
     # Add catalog rows
     for catalog in all_catalogs:
-        valid_from = catalog.get('valid_from', '').split('T')[0]
-        valid_to = catalog.get('valid_to', '').split('T')[0]
         store_logo = catalog.get('store_logo', '')
         store_name = catalog.get('store', '')
+        is_active = catalog.get('is_active', False)
         
-        logo_html = f'<img src="{store_logo}" alt="{store_name}" class="store-logo">' if store_logo else ''
+        row_class = "hover:bg-green-50" if is_active else "hover:bg-gray-50"
+        button_class = "bg-green-600 hover:bg-green-700 focus:ring-green-500" if is_active else "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
         
         html += f"""
-            <tr>
-                <td class="store-cell">
-                    {logo_html}
-                    {store_name}
-                </td>
-                <td>{catalog.get('title', '')}</td>
-                <td>{valid_from}</td>
-                <td>{valid_to}</td>
-                <td>
-                    <a href="{catalog.get('url', '#')}" target="_blank">View Catalog</a>
-                </td>
-            </tr>
+                        <tr class="{row_class}">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-8 w-8">
+                                        <img class="h-8 w-8 object-contain" src="{store_logo}" alt="{store_name}">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">{store_name}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{catalog['date_range']}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <a href="{catalog.get('url', '#')}" 
+                                   target="_blank"
+                                   class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white {button_class} focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
         """
     
     html += """
-        </tbody>
-    </table>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="text-center text-sm text-gray-500">
+            Last updated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + """
+        </div>
+    </div>
 </body>
 </html>
     """
     
-    # Write the HTML file to root directory instead of data
+    # Write the HTML file
     output_file = Path('index.html')
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(html)
