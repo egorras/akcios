@@ -12,19 +12,30 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Ensure data directory exists
-      run: mkdir -p data
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
     
-    - name: Update JSON data
+    - name: Install dependencies
       run: |
-        echo "{\"lastUpdated\": \"$(date -u)\"}" > data/index.json
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4
+    
+    - name: Ensure directories exist
+      run: |
+        mkdir -p data
+        mkdir -p data/images
+    
+    - name: Run crawler script
+      run: python -m scripts
     
     - name: Commit and push if changed
       run: |
         git config --global user.name 'GitHub Action'
         git config --global user.email 'action@github.com'
-        git add data/index.json
-        git commit -m "Update data" || exit 0
+        git add data/index*.json data/images/ index.html
+        git commit -m "Update catalogs, index.html and images" || exit 0
         git push
 
 permissions:
