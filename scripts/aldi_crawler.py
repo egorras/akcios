@@ -51,18 +51,10 @@ class AldiCrawler(BaseCrawler):
                 logger.debug(f"Skipping entry without valid dates: {url}")
                 continue
             
-            img = link.find('img')
-            image_url = None
-            if img:
-                image_url = img.get('data-src', '').split('?')[0]
-                logger.debug(f"Found image URL: {image_url}")
-            
             catalog = {
-                'title': link['title'],
                 'url': url,
                 'valid_from': valid_from,
                 'valid_to': valid_to,
-                'image_url': image_url,
                 'last_updated': datetime.now()
             }
             

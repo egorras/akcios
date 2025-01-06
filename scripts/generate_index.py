@@ -144,10 +144,18 @@ def generate_html():
             store_name = catalog['store']
             store_style = store_styles[store_name]
             
+            button_classes = [
+                "store-button",
+                "flex items-center justify-center px-4 py-2 rounded-md",
+                store_style['bg'],
+                store_style['text'],
+                "w-24 font-medium"
+            ]
+            
             html += f"""
                 <a href="{catalog['url']}" 
                    target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md {store_style['bg']} {store_style['text']} w-24 font-medium">
+                   class="{' '.join(button_classes)}"
                     <span class="text-sm">{store_name}</span>
                 </a>
             """

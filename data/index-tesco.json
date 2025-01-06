@@ -1,16 +1,16 @@
 [
   {
     "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-01-09/",
-    "image_url": "https://tesco.hu/img/tescoce_hu/leaflets/2025-01-09/medium/F1.jpg",
     "valid_from": "2025-01-09T00:00:00",
-    "valid_to": "2025-01-15T00:00:00",
-    "last_updated": "2025-01-06T01:05:41.455079"
+    "valid_to": "2025-01-15T23:59:59.999999",
+    "last_updated": "2025-01-06T01:30:01.442405",
+    "active": true
   },
   {
     "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-01-02/",
-    "image_url": "https://tesco.hu/img/tescoce_hu/leaflets/2025-01-02/medium/F1.jpg",
     "valid_from": "2025-01-02T00:00:00",
-    "valid_to": "2025-01-08T00:00:00",
-    "last_updated": "2025-01-06T01:05:41.455288"
+    "valid_to": "2025-01-08T23:59:59.999999",
+    "last_updated": "2025-01-06T01:30:01.442235",
+    "active": true
   }
 ]

@@ -2,39 +2,34 @@ from datetime import datetime, timedelta
 import logging
 from typing import List, Dict, Any
 from .base_crawler import BaseCrawler
-from .lidl_crawler import LidlCrawler
+import requests
 
 logger = logging.getLogger(__name__)
 
 class TescoCrawler(BaseCrawler):
     def __init__(self):
         super().__init__("TESCO")
-        
+                    
     def get_catalog_info(self) -> List[Dict[str, Any]]:
         catalogs = []
         
         try:
-            # Get dates from Lidl crawler
-            lidl_crawler = LidlCrawler()
-            lidl_catalogs = lidl_crawler.get_catalog_info()
+            # Get current date
+            now = datetime.now()
             
-            if not lidl_catalogs:
-                logger.warning("No Lidl catalogs found to base dates on")
-                return []
-            
-            # Use Lidl dates to generate Tesco URLs
-            for lidl_catalog in lidl_catalogs:
+            # Generate for previous week (current catalog) and current week (next catalog)
+            for week_offset in [-1, 0]:
                 try:
-                    # The dates are already datetime objects, no need to parse them
-                    valid_from = lidl_catalog['valid_from']
-                    valid_to = lidl_catalog['valid_to']
+                    # Calculate date for this iteration
+                    target_date = now + timedelta(days=7 * week_offset)
+                    # Find Thursday of that week (weekday 3 = Thursday)
+                    thursday = target_date - timedelta(days=target_date.weekday()) + timedelta(days=3)
                     
-                    if isinstance(valid_from, str):
-                        valid_from = datetime.fromisoformat(valid_from)
-                    if isinstance(valid_to, str):
-                        valid_to = datetime.fromisoformat(valid_to)
+                    # Set time to midnight
+                    valid_from = datetime.combine(thursday.date(), datetime.min.time())
+                    valid_to = datetime.combine((valid_from + timedelta(days=6)).date(), datetime.max.time())
                     
-                    # Format the date for Tesco URL
+                    # Format date components for URL
                     formatted_date = valid_from.strftime("%Y-%m-%d")
                     year, month, day = formatted_date.split('-')
                     
@@ -43,21 +38,20 @@ class TescoCrawler(BaseCrawler):
                     
                     for store_type in store_types:
                         url = f"https://tesco.hu/katalogus-oldalak/{store_type}/tesco-ujsag-{year}-{month}-{day}/"
-                        image_url = f"https://tesco.hu/img/tescoce_hu/leaflets/{year}-{month}-{day}/medium/F1.jpg"
                         
                         catalog = {
                             'url': url,
-                            'image_url': image_url,
                             'valid_from': valid_from.isoformat(),
                             'valid_to': valid_to.isoformat(),
-                            'last_updated': datetime.now().isoformat()
+                            'last_updated': datetime.now().isoformat(),
+                            'active': True
                         }
                         
                         catalogs.append(catalog)
                         logger.debug(f"Created catalog entry: {catalog}")
                     
                 except Exception as e:
-                    logger.error(f"Error processing date: {e}, catalog: {lidl_catalog}")
+                    logger.error(f"Error processing week offset {week_offset}: {e}")
                     continue
             
             logger.info(f"Generated {len(catalogs)} catalog entries")

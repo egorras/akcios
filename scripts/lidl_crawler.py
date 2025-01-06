@@ -1,111 +1,75 @@
+from datetime import datetime, timedelta
+import logging
+from typing import List, Dict, Any
+from .base_crawler import BaseCrawler
 import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
-import re
-from .base_crawler import BaseCrawler, logger
+
+logger = logging.getLogger(__name__)
 
 class LidlCrawler(BaseCrawler):
     def __init__(self):
         super().__init__("LIDL")
-    
-    def parse_date(self, date_text: str) -> datetime:
-        """Parse date from text like 'Érvényes 01.09-től'"""
+        
+    def validate_url(self, url: str) -> bool:
+        """Check if URL returns a valid response."""
         try:
-            # Extract date part (e.g., "01.09")
-            match = re.search(r'(\d{2})\.(\d{2})', date_text)
-            if match:
-                month, day = match.groups()
-                current_year = datetime.now().year
-                
-                # Try current year first
-                try:
-                    date = datetime(current_year, int(month), int(day))
-                                            
-                    return date
-                    
-                except ValueError as e:
-                    logger.debug(f"Invalid date: {month}/{day}: {e}")
-                    return None
-                    
-        except (ValueError, AttributeError) as e:
-            logger.debug(f"Error parsing date '{date_text}': {e}")
-        return None
-
-    def get_catalog_info(self):
-        url = 'https://www.lidl.hu/c/szorolap/s10013623'
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-
-        logger.info(f"Fetching URL: {url}")
-        response = requests.get(url, headers=headers)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        catalogs = []
-        seen_urls = set()
-        
-        # Find the "Akciós szórólapok" section
-        main_section = soup.find('h2', string='Akciós szórólapok')
-        if not main_section:
-            logger.warning("Could not find 'Akciós szórólapok' section")
-            return catalogs
-            
-        section = main_section.find_parent('section')
-        if not section:
-            logger.warning("Could not find parent section")
-            return catalogs
-        
-        # Find all flyer links within this section
-        flyer_links = section.find_all('a', class_='flyer')
-        logger.info(f"Found {len(flyer_links)} flyer links")
-        
-        for link in flyer_links:
-            url = link.get('href', '')
-            
-            if not url or url in seen_urls:
-                continue
-            
-            # Skip non-food catalogs
-            title_elem = link.find('h4', class_='flyer__title')
-            if title_elem and 'nonfood' in title_elem.text.lower():
-                logger.debug(f"Skipping non-food catalog: {url}")
-                continue
-                
-            seen_urls.add(url)
-            logger.debug(f"Processing link: {url}")
-            
-            # Get flyer name and title
-            name_elem = link.find('h2', class_='flyer__name')
-            title = title_elem.text.strip() if title_elem else ''
-            name = name_elem.text.strip() if name_elem else ''
-            
-            # Find validity date
-            valid_text = name if 'érvényes' in name.lower() else title
-            if not valid_text or 'érvényes' not in valid_text.lower():
-                continue
-            
-            valid_from = self.parse_date(valid_text)
-            if not valid_from:
-                continue
-            
-            # Assume valid for one week
-            valid_to = datetime(valid_from.year, valid_from.month, valid_from.day + 6)
-            
-            # Get image URL if available
-            img = link.find('img', class_='flyer__image')
-            image_url = img.get('src', '') if img else None
-            
-            catalog = {
-                'title': title,  # Use just the title, not the combined name+title
-                'url': url,
-                'valid_from': valid_from,
-                'valid_to': valid_to,
-                'image_url': image_url,
-                'last_updated': datetime.now()
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
+            response = requests.head(url, timeout=5, headers=headers, allow_redirects=True)
+            return response.status_code == 200
+        except Exception as e:
+            logger.debug(f"URL validation failed for {url}: {e}")
+            return False
             
-            logger.debug(f"Created catalog entry: {catalog}")
-            catalogs.append(catalog)
+    def get_catalog_info(self) -> List[Dict[str, Any]]:
+        catalogs = []
         
-        logger.info(f"Found {len(catalogs)} unique food catalogs with valid dates")
-        return catalogs 
+        try:
+            # Get current date
+            now = datetime.now()
+            
+            # Generate for previous week (current catalog) and current week (next catalog)
+            for week_offset in [-1, 0]:
+                try:
+                    # Calculate date for this iteration
+                    target_date = now + timedelta(days=7 * week_offset)
+                    # Find Thursday of that week (weekday 3 = Thursday)
+                    thursday = target_date - timedelta(days=target_date.weekday()) + timedelta(days=3)
+                    
+                    # Set time to midnight
+                    valid_from = datetime.combine(thursday.date(), datetime.min.time())
+                    valid_to = datetime.combine((valid_from + timedelta(days=6)).date(), datetime.min.time())
+                    
+                    # Get week number
+                    week_num = valid_from.isocalendar()[1]
+                    year = valid_from.year
+                    
+                    # Generate URL
+                    url = f"https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-{week_num:02d}-het-{year}/ar/0?lf=HHZ"
+                    
+                    # Validate URL
+                    if not self.validate_url(url):
+                        logger.debug(f"Skipping invalid URL: {url}")
+                        continue
+                    
+                    catalog = {
+                        'url': url,
+                        'valid_from': valid_from.isoformat(),
+                        'valid_to': valid_to.isoformat(),
+                        'last_updated': datetime.now().isoformat()
+                    }
+                    
+                    catalogs.append(catalog)
+                    logger.debug(f"Created catalog entry: {catalog}")
+                    
+                except Exception as e:
+                    logger.error(f"Error processing week offset {week_offset}: {e}")
+                    continue
+            
+            logger.info(f"Generated {len(catalogs)} catalog entries")
+            return catalogs
+            
+        except Exception as e:
+            logger.error(f"Error generating Lidl catalogs: {e}")
+            return [] 

@@ -1,16 +1,14 @@
 [
   {
     "url": "https://www.spar.hu/ajanlatok/spar/250109-1-spar-szorolap-p",
-    "image_url": "https://ipaper.ipapercms.dk/spar-hungary/spar/250109-1-spar-szorolap-p/Image.ashx?PageNumber=1&ImageType=Normal",
     "valid_from": "2025-01-09T00:00:00",
-    "valid_to": "2025-01-15T00:00:00",
-    "last_updated": "2025-01-06T01:05:34.634821"
+    "valid_to": "2025-01-15T23:59:59.999999",
+    "last_updated": "2025-01-06T01:30:01.440354"
   },
   {
     "url": "https://www.spar.hu/ajanlatok/spar/250102-1-spar-szorolap-m",
-    "image_url": "https://ipaper.ipapercms.dk/spar-hungary/spar/250102-1-spar-szorolap-m/Image.ashx?PageNumber=1&ImageType=Normal",
     "valid_from": "2025-01-02T00:00:00",
-    "valid_to": "2025-01-08T00:00:00",
-    "last_updated": "2025-01-06T01:05:34.514552"
+    "valid_to": "2025-01-08T23:59:59.999999",
+    "last_updated": "2025-01-06T01:30:00.980321"
   }
 ]
