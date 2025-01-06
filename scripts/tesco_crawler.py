@@ -43,8 +43,7 @@ class TescoCrawler(BaseCrawler):
                             'url': url,
                             'valid_from': valid_from.isoformat(),
                             'valid_to': valid_to.isoformat(),
-                            'last_updated': datetime.now().isoformat(),
-                            'active': True
+                            'last_updated': datetime.now().isoformat()
                         }
                         
                         catalogs.append(catalog)

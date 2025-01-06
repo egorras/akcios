@@ -34,8 +34,8 @@ jobs:
       run: |
         git config --global user.name 'GitHub Action'
         git config --global user.email 'action@github.com'
-        git add data/index*.json data/images/ index.html
-        git commit -m "Update catalogs, index.html and images" || exit 0
+        git add data/index*.json data/images/ index.html styles.min.css
+        git commit -m "Update catalogs" || exit 0
         git push
 
 permissions:

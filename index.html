@@ -1,105 +1,23 @@
 
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
     <title>Akciós</title>
-    <link rel="icon" href="/images/favicon.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .store-button {
-            transition: all 0.2s;
-        }
-        .store-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .this-week {
-            background-color: rgba(59, 130, 246, 0.1);
-            outline: 2px solid rgba(59, 130, 246, 0.2);
-        }
-        @media (prefers-color-scheme: dark) {
-            .this-week {
-                background-color: rgba(59, 130, 246, 0.15);
-                outline: 2px solid rgba(59, 130, 246, 0.3);
-            }
-        }
-    </style>
+    <link rel="preload" href="styles.min.css" as="style">
+    <link rel="stylesheet" href="styles.min.css">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="32x32">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 </head>
-<body class="min-h-screen p-4 md:p-8">
-    <div class="max-w-3xl mx-auto space-y-6">
-    
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Jan 09 — Jan 15</div>
-            </div>
-            <div class="p-4 flex flex-wrap gap-3">
-        
-                <a href="https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_09_kw02kqihsij" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-blue-800 text-white w-24 font-medium"
-                    <span class="text-sm">ALDI</span>
-                </a>
-            
-                <a href="https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-02-het-2025/ar/0?lf=HHZ" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-yellow-400 text-blue-600 w-24 font-medium"
-                    <span class="text-sm">LIDL</span>
-                </a>
-            
-                <a href="https://www.spar.hu/ajanlatok/spar/250109-1-spar-szorolap-p" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-red-600 text-white w-24 font-medium"
-                    <span class="text-sm">SPAR</span>
-                </a>
-            
-                <a href="https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-01-09/" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-[#00539F] text-white w-24 font-medium"
-                    <span class="text-sm">TESCO</span>
-                </a>
-            
-            </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden this-week">
-            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Jan 02 — Jan 08</div>
-            </div>
-            <div class="p-4 flex flex-wrap gap-3">
-        
-                <a href="https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_02_kw01cfml6hrh" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-blue-800 text-white w-24 font-medium"
-                    <span class="text-sm">ALDI</span>
-                </a>
-            
-                <a href="https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-01-het-2025/ar/0?lf=HHZ" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-yellow-400 text-blue-600 w-24 font-medium"
-                    <span class="text-sm">LIDL</span>
-                </a>
-            
-                <a href="https://www.spar.hu/ajanlatok/spar/250102-1-spar-szorolap-m" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-red-600 text-white w-24 font-medium"
-                    <span class="text-sm">SPAR</span>
-                </a>
-            
-                <a href="https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-01-02/" 
-                   target="_blank" 
-                   class="store-button flex items-center justify-center px-4 py-2 rounded-md bg-[#00539F] text-white w-24 font-medium"
-                    <span class="text-sm">TESCO</span>
-                </a>
-            
-            </div>
-        </div>
-        
-        <div class="text-center text-sm text-gray-500 dark:text-gray-400">
-            Last updated: 2025-01-06 06:12:56
+<body>
+    <div class="container">
+    <div class="card this-week"><div class="card-header"><div class="date-range">Jan 02 — Jan 08</div></div><div class="card-content"><a href="https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_02_kw01cfml6hrh" target="_blank" class="store-button aldi"><span>ALDI</span></a><a href="https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-01-het-2025/ar/0?lf=HHZ" target="_blank" class="store-button lidl"><span>LIDL</span></a><a href="https://www.spar.hu/ajanlatok/spar/250102-1-spar-szorolap-m" target="_blank" class="store-button spar"><span>SPAR</span></a><a href="https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-01-02/" target="_blank" class="store-button tesco"><span>TESCO</span></a></div></div><div class="card"><div class="card-header"><div class="date-range">Jan 09 — Jan 15</div></div><div class="card-content"><a href="https://szorolap.aldi.hu/online_akcios_ujsag_2025_01_09_kw02kqihsij" target="_blank" class="store-button aldi"><span>ALDI</span></a><a href="https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-02-het-2025/ar/0?lf=HHZ" target="_blank" class="store-button lidl"><span>LIDL</span></a><a href="https://www.spar.hu/ajanlatok/spar/250109-1-spar-szorolap-p" target="_blank" class="store-button spar"><span>SPAR</span></a><a href="https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-01-09/" target="_blank" class="store-button tesco"><span>TESCO</span></a></div></div>
+        <div class="footer">
+            Last updated: 2025-01-06 09:28:14
         </div>
     </div>
 </body>

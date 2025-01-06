@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +24,27 @@ def load_catalogs(store_name: str) -> List[Dict[str, Any]]:
     
     with open(index_file, 'r', encoding='utf-8') as f:
         return json.load(f)
+
+def minify_css():
+    """Minify CSS file."""
+    css_file = Path('styles.css')
+    minified = ''
+    
+    with open(css_file, 'r', encoding='utf-8') as f:
+        css = f.read()
+        # Remove comments
+        css = re.sub(r'/\*.*?\*/', '', css, flags=re.DOTALL)
+        # Remove whitespace
+        css = re.sub(r'\s+', ' ', css)
+        # Remove spaces around special characters
+        css = re.sub(r'\s*([\{\}\:\;\,])\s*', r'\1', css)
+        minified = css.strip()
+    
+    # Write minified version
+    with open('styles.min.css', 'w', encoding='utf-8') as f:
+        f.write(minified)
+    
+    return 'styles.min.css'
 
 def generate_html():
     """Generate index.html with combined catalog data."""
@@ -48,26 +70,6 @@ def generate_html():
     # Sort catalogs by valid_from date
     all_catalogs.sort(key=lambda x: x.get('valid_from', ''), reverse=True)
     
-    # Add this after the stores definition
-    store_styles = {
-        'ALDI': {
-            'bg': 'bg-blue-800',
-            'text': 'text-white'
-        },
-        'LIDL': {
-            'bg': 'bg-yellow-400',
-            'text': 'text-blue-600'
-        },
-        'SPAR': {
-            'bg': 'bg-red-600',
-            'text': 'text-white'
-        },
-        'TESCO': {
-            'bg': 'bg-[#00539F]',
-            'text': 'text-white'
-        }
-    }
-    
     # Group catalogs by date range
     date_groups = {}
     for catalog in all_catalogs:
@@ -90,84 +92,64 @@ def generate_html():
         reverse=True
     ))
 
-    # Generate HTML
-    html = """
+    # Reorder groups to show current date first
+    today = datetime.now().date()
+    reordered_groups = {}
+    
+    # First, find the current week's group
+    current_week_key = None
+    for date_range, group in sorted_groups.items():
+        if group['is_this_week']:
+            current_week_key = date_range
+            reordered_groups[date_range] = group
+            break
+    
+    # Then add all other groups
+    for date_range, group in sorted_groups.items():
+        if date_range != current_week_key:
+            reordered_groups[date_range] = group
+
+    # Minify CSS before generating HTML
+    css_file = minify_css()  # This creates and returns 'styles.min.css'
+
+    # Generate HTML with minified CSS
+    html = f"""
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-100 dark:bg-gray-900">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
     <title>Akciós</title>
-    <link rel="icon" href="/images/favicon.png" type="image/png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .store-button {
-            transition: all 0.2s;
-        }
-        .store-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .this-week {
-            background-color: rgba(59, 130, 246, 0.1);
-            outline: 2px solid rgba(59, 130, 246, 0.2);
-        }
-        @media (prefers-color-scheme: dark) {
-            .this-week {
-                background-color: rgba(59, 130, 246, 0.15);
-                outline: 2px solid rgba(59, 130, 246, 0.3);
-            }
-        }
-    </style>
+    <link rel="preload" href="{css_file}" as="style">
+    <link rel="stylesheet" href="{css_file}">
+    <link rel="icon" href="/images/favicon.png" type="image/png" sizes="32x32">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 </head>
-<body class="min-h-screen p-4 md:p-8">
-    <div class="max-w-3xl mx-auto space-y-6">
+<body>
+    <div class="container">
     """
 
-    for date_range, group in sorted_groups.items():
-        group_classes = ["bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden"]
-        if group['is_this_week']:
-            group_classes.append("this-week")
-
-        html += f"""
-        <div class="{' '.join(group_classes)}">
-            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{date_range}</div>
-            </div>
-            <div class="p-4 flex flex-wrap gap-3">
-        """
-
-        # Add store buttons
+    for date_range, group in reordered_groups.items():
+        card_class = "card" + (" this-week" if group['is_this_week'] else "")
+        
+        html += f'<div class="{card_class}"><div class="card-header">'
+        html += f'<div class="date-range">{date_range}</div></div>'
+        html += '<div class="card-content">'
+        
         for catalog in group['catalogs']:
             store_name = catalog['store']
-            store_style = store_styles[store_name]
-            
-            button_classes = [
-                "store-button",
-                "flex items-center justify-center px-4 py-2 rounded-md",
-                store_style['bg'],
-                store_style['text'],
-                "w-24 font-medium"
-            ]
-            
-            html += f"""
-                <a href="{catalog['url']}" 
-                   target="_blank" 
-                   class="{' '.join(button_classes)}"
-                    <span class="text-sm">{store_name}</span>
-                </a>
-            """
+            store_class = f"store-button {store_name.lower()}"
+            html += f'<a href="{catalog["url"]}" target="_blank" class="{store_class}">'
+            html += f'<span>{store_name}</span></a>'
+        
+        html += '</div></div>'
 
-        html += """
-            </div>
-        </div>
-        """
-
-    html += """
-        <div class="text-center text-sm text-gray-500 dark:text-gray-400">
-            Last updated: """ + datetime.now().strftime("%Y-%m-%d %H:%M:%S") + """
+    html += f"""
+        <div class="footer">
+            Last updated: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
         </div>
     </div>
 </body>
