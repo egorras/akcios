@@ -1,6 +1,7 @@
 from .aldi_crawler import AldiCrawler
 from .lidl_crawler import LidlCrawler
 from .spar_crawler import SparCrawler
+from .tesco_crawler import TescoCrawler
 from .generate_index import generate_html
 import logging
 
@@ -19,6 +20,9 @@ def main():
         
         spar_crawler = SparCrawler()
         spar_crawler.run()
+        
+        tesco_crawler = TescoCrawler()
+        tesco_crawler.run()
         
         # Generate index page
         logger.info("Generating index page...")

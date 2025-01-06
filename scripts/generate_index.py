@@ -33,7 +33,7 @@ def generate_html():
         # Check if today falls between valid_from and valid_to
         return valid_from <= today <= valid_to
 
-    stores = ['ALDI', 'LIDL', 'SPAR']
+    stores = ['ALDI', 'LIDL', 'SPAR', 'TESCO']
     all_catalogs = []
     
     # Load catalogs from all stores
@@ -60,6 +60,10 @@ def generate_html():
         },
         'SPAR': {
             'bg': 'bg-red-600',
+            'text': 'text-white'
+        },
+        'TESCO': {
+            'bg': 'bg-[#00539F]',
             'text': 'text-white'
         }
     }
