@@ -1,8 +1,14 @@
 [
   {
+    "url": "https://www.spar.hu/ajanlatok/spar/250410-1-spar-szorolap-p",
+    "valid_from": "2025-04-10T00:00:00",
+    "valid_to": "2025-04-16T23:59:59.999999",
+    "last_updated": "2025-04-07T06:13:36.589718"
+  },
+  {
     "url": "https://www.spar.hu/ajanlatok/spar/250403-1-spar-szorolap-m",
     "valid_from": "2025-04-03T00:00:00",
     "valid_to": "2025-04-09T23:59:59.999999",
-    "last_updated": "2025-04-06T06:11:45.656725"
+    "last_updated": "2025-04-07T06:13:36.147160"
   }
 ]
