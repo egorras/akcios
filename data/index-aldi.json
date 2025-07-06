@@ -1,26 +1,32 @@
 [
   {
-    "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2025_06_19_kw25_zx46mu1c",
-    "valid_from": "2025-06-19T00:00:00",
-    "valid_to": "2025-06-25T00:00:00",
-    "last_updated": "2025-06-21T06:12:35.326246"
+    "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2025_07_10_kw28_3qqrloi4",
+    "valid_from": "2025-07-10T00:00:00",
+    "valid_to": "2025-07-16T00:00:00",
+    "last_updated": "2025-07-06T06:13:18.498129"
   },
   {
-    "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2025_06_12_kw24_moo20ls6",
-    "valid_from": "2025-06-12T00:00:00",
-    "valid_to": "2025-06-18T00:00:00",
-    "last_updated": "2025-06-21T06:12:35.326433"
+    "url": "https://szorolap.aldi.hu/online_nyitas_akcios_ujsag_2025_07_10_kw28_5u9ryew3",
+    "valid_from": "2025-07-10T00:00:00",
+    "valid_to": "2025-07-16T00:00:00",
+    "last_updated": "2025-07-06T06:13:18.498259"
   },
   {
-    "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2025_06_12_kw24_v4rjeg8r",
-    "valid_from": "2025-06-12T00:00:00",
-    "valid_to": "2025-06-18T00:00:00",
-    "last_updated": "2025-06-21T06:12:35.326567"
+    "url": "https://szorolap.aldi.hu/aldi_kozepso_sor_2025_07_10_kw28_g9jqu1i3",
+    "valid_from": "2025-07-10T00:00:00",
+    "valid_to": "2025-07-16T00:00:00",
+    "last_updated": "2025-07-06T06:13:18.498339"
   },
   {
-    "url": "https://szorolap.aldi.hu/aldi_utazas_2025_06_12_kw24_c5qaz3r4",
-    "valid_from": "2025-06-12T00:00:00",
-    "valid_to": "2025-06-18T00:00:00",
-    "last_updated": "2025-06-21T06:12:35.326624"
+    "url": "https://szorolap.aldi.hu/aldi_utazas_2025_07_10_kw28_6ob5ov9j",
+    "valid_from": "2025-07-10T00:00:00",
+    "valid_to": "2025-07-16T00:00:00",
+    "last_updated": "2025-07-06T06:13:18.498416"
+  },
+  {
+    "url": "https://szorolap.aldi.hu/online_akcios_ujsag_2025_07_03_kw27_1xp945rh",
+    "valid_from": "2025-07-03T00:00:00",
+    "valid_to": "2025-07-09T00:00:00",
+    "last_updated": "2025-07-06T06:13:18.497970"
   }
 ]
