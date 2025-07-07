@@ -1,14 +1,14 @@
 [
   {
+    "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-07-10/",
+    "valid_from": "2025-07-10T00:00:00",
+    "valid_to": "2025-07-16T23:59:59.999999",
+    "last_updated": "2025-07-07T06:15:48.263193"
+  },
+  {
     "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-07-03/",
     "valid_from": "2025-07-03T00:00:00",
     "valid_to": "2025-07-09T23:59:59.999999",
-    "last_updated": "2025-07-06T06:13:21.505028"
-  },
-  {
-    "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2025-06-26/",
-    "valid_from": "2025-06-26T00:00:00",
-    "valid_to": "2025-07-02T23:59:59.999999",
-    "last_updated": "2025-07-06T06:13:21.504939"
+    "last_updated": "2025-07-07T06:15:48.263063"
   }
 ]
