@@ -1,14 +1,14 @@
 [
   {
+    "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-05-het-2026/ar/0?lf=HHZ",
+    "valid_from": "2026-01-29T00:00:00",
+    "valid_to": "2026-02-04T00:00:00",
+    "last_updated": "2026-01-26T06:21:02.422207"
+  },
+  {
     "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-04-het-2026/ar/0?lf=HHZ",
     "valid_from": "2026-01-22T00:00:00",
     "valid_to": "2026-01-28T00:00:00",
-    "last_updated": "2026-01-25T06:16:32.112353"
-  },
-  {
-    "url": "https://www.lidl.hu/l/hu/ujsag/akcios-ujsag-03-het-2026/ar/0?lf=HHZ",
-    "valid_from": "2026-01-15T00:00:00",
-    "valid_to": "2026-01-21T00:00:00",
-    "last_updated": "2026-01-25T06:16:31.823289"
+    "last_updated": "2026-01-26T06:21:02.224167"
   }
 ]
