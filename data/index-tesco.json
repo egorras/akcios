@@ -1,14 +1,14 @@
 [
   {
+    "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2026-05-07/",
+    "valid_from": "2026-05-07T00:00:00",
+    "valid_to": "2026-05-13T23:59:59.999999",
+    "last_updated": "2026-05-04T08:12:47.478859"
+  },
+  {
     "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2026-04-30/",
     "valid_from": "2026-04-30T00:00:00",
     "valid_to": "2026-05-06T23:59:59.999999",
-    "last_updated": "2026-05-03T07:43:49.899459"
-  },
-  {
-    "url": "https://tesco.hu/katalogus-oldalak/hipermarket/tesco-ujsag-2026-04-23/",
-    "valid_from": "2026-04-23T00:00:00",
-    "valid_to": "2026-04-29T23:59:59.999999",
-    "last_updated": "2026-05-03T07:43:49.899378"
+    "last_updated": "2026-05-04T08:12:47.478785"
   }
 ]
